@@ -34,17 +34,20 @@ export default function Home() {
     fetchPosts()
 
   }, [])
-  if (loading) {
+
+  
+  if(loading) {
     return (
       <div className="loadingContainer">
-        <p className="loadingTitle">Loading</p>
-      </div>)
+        <p className="loadingTitle">Loading...</p>
+      </div>
+    )
   }
 
   return (
     <div className="postContainer">
       <h1>Post Feed</h1> 
-      { posts.map((post: Post) => {
+      {posts.map((post: Post) => {
         return (
           <div key={post.id} className="postWrapper">
             <h2 className="postTitle">{post.title}</h2>
