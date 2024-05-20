@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
---background: #020202;
---primary:#0d2818;
---accent:#415a77;
---light:#e0e1dd;
---dark:#0e1128;
+  --background: #020202;
+  --primary: #0d2818;
+  --accent: #415a77;
+  --light: #e0e1dd;
+  --dark: #0e1128;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,52 +18,51 @@
   }
 }
 
-
-body{
+body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: system-ui, sana serif;
-  background-color:var(--background);
-  color:var(--light);
+  font-family:
+    system-ui,
+    sana serif;
+  background-color: var(--background);
+  color: var(--light);
 }
 
-.postContainer{
-    display: flex;
+.postContainer {
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   padding: 1rem 0;
-
 }
-.postWrapper{
-    background-color: var(--dark);
-  width: min(700px, (100% - 2rem));
-  margin: .5rem 0;
+.postWrapper {
+  background-color: var(--dark);
+  max-width: 700px;
+  width: calc(100% - 2rem);
+  margin: 0.5rem 0;
   padding: 2rem;
 }
-.loadingContainer{
-   display: flex;
+.loadingContainer,
+.errorContainer {
+  display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-
 }
-.loadingTitle{
-font-size: 2rem;
-letter-spacing: 1rem;
-color:var(--light);
+.loadingTitle,
+.errorTitle {
+  font-size: 2rem;
+  letter-spacing: 1rem;
+  color: var(--light);
 }
 
-h1{
+h1 {
   font-size: 2.5rem;
   padding-bottom: 1rem;
   font-weight: 700;
-
 }
-.postTitle{
+.postTitle {
   padding-bottom: 1rem;
   font-weight: 700;
-    
-
 }
