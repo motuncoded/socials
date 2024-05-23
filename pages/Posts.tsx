@@ -13,27 +13,28 @@ export default function Posts() {
   type Error = {
     message: string;
   };
-  type Page = {
-    page: number;
-  };
+  type Page = number;
 
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [page, setPage] = useState<Page>({ page: 1 });
-  const hasMore = page.page * 1 < 100;
+  const [page, setPage] = useState<Page>(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${BASE_URL}${page.page}`);
+      const response = await fetch(`${BASE_URL}${page}`);
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
       const posts = await response.json();
       setPosts((prev) => [...prev, ...posts]);
+      if (posts.length < 10) {
+        setHasMore(false);
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {
@@ -53,14 +54,14 @@ export default function Posts() {
       document.documentElement.scrollHeight
     ) {
       if (hasMore) {
-        setPage((prev) => ({ ...prev, page: prev.page + 1 }));
+        setPage((prev) => prev + 1);
       }
     }
   };
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, );
+  });
 
   //   if (loading) {
   //     return (
