@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { FaRegComment, FaRegHeart, FaHeart,FaRegShareSquare } from "react-icons/fa";
-
+import {
+  FaRegComment,
+  FaRegHeart,
+  FaHeart,
+  FaRegShareSquare,
+} from "react-icons/fa";
 
 //api
 const BASE_URL = "https://jsonplaceholder.typicode.com/posts?_page=";
 const PRY_URL = "https://jsonplaceholder.typicode.com/users";
-
 
 export default function Posts() {
   type Post = {
@@ -16,7 +19,6 @@ export default function Posts() {
     userId: number;
     likes: number;
     liked: boolean;
-
   };
 
   type Error = {
@@ -24,11 +26,10 @@ export default function Posts() {
   };
   type Page = number;
 
-
-   type User = {
+  type User = {
     id: number;
-     name: string;
-     username: string;
+    name: string;
+    username: string;
   };
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -42,20 +43,20 @@ export default function Posts() {
   const fetchPosts = async () => {
     try {
       setLoading(true);
-    
-  const [response, response_1] = await Promise.all([
+
+      const [response, response_1] = await Promise.all([
         fetch(`${BASE_URL}${page}`),
         fetch(`${PRY_URL}`),
-  ]);
+      ]);
       if (!response.ok && !response_1.ok) {
         throw new Error("Failed to fetch posts");
       }
 
       const posts = await response.json();
       const users = await response_1.json();
-      setPosts((prev) => [...prev, ...posts, ]);
+      setPosts((prev) => [...prev, ...posts]);
       setUsers(users);
-      
+
       if (posts.length < 10) {
         setHasMore(false);
       }
@@ -104,10 +105,9 @@ export default function Posts() {
   const handleLikeClick = (post: Post) => {
     setPosts(
       posts.map((p) =>
-        p.id === post.id ? { ...p,
-          likes:(p.likes || 1) + 0,
-          liked:!p.liked,
-} : p,
+        p.id === post.id
+          ? { ...p, likes: (p.likes || 1) + 0, liked: !p.liked }
+          : p,
       ),
     );
   };
@@ -116,7 +116,7 @@ export default function Posts() {
     <div ref={scrollContainerRef} className="postContainer">
       <h2 className="text-[32px]">Post Feed</h2>
       {posts.map((post: Post) => {
-         const user = users.find((user) => user.id === post.id);
+        const user = users.find((user) => user.id === post.id);
 
         return (
           <div key={post.id} className="postWrapper">
@@ -150,9 +150,11 @@ export default function Posts() {
           </div>
         );
       })}
-      {hasMore && (<div className="p-4">
-      <p className="text-[1rem]">Loading..</p>
-      </div>)}
+      {hasMore && (
+        <div className="p-4">
+          <p className="text-[1rem]">Loading..</p>
+        </div>
+      )}
     </div>
   );
 }
