@@ -11,30 +11,27 @@ import {
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_page=";
 const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
+type Post = {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
+  likes: number;
+  liked: boolean;
+};
 
-  type Post = {
-    id: number;
-    title: string;
-    body: string;
-    userId: number;
-    likes: number;
-    liked: boolean;
-    
-  };
+type Error = {
+  message: string;
+};
+type Page = number;
 
-  type Error = {
-    message: string;
-  };
-  type Page = number;
-
-  type User = {
-    id: number;
-    name: string;
-    username: string;
-  };
+type User = {
+  id: number;
+  name: string;
+  username: string;
+};
 
 export default function Posts() {
-
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
