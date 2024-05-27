@@ -8,10 +8,10 @@ import {
 } from "react-icons/fa";
 
 //api
-const BASE_URL = "https://jsonplaceholder.typicode.com/posts?_page=";
-const PRY_URL = "https://jsonplaceholder.typicode.com/users";
+const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_page=";
+const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
-export default function Posts() {
+
   type Post = {
     id: number;
     title: string;
@@ -19,6 +19,7 @@ export default function Posts() {
     userId: number;
     likes: number;
     liked: boolean;
+    
   };
 
   type Error = {
@@ -31,6 +32,9 @@ export default function Posts() {
     name: string;
     username: string;
   };
+
+export default function Posts() {
+
   const [posts, setPosts] = useState<Post[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
@@ -45,8 +49,8 @@ export default function Posts() {
       setLoading(true);
 
       const [response, response_1] = await Promise.all([
-        fetch(`${BASE_URL}${page}`),
-        fetch(`${PRY_URL}`),
+        fetch(`${POSTS_URL}${page}`),
+        fetch(`${USERS_URL}`),
       ]);
       if (!response.ok && !response_1.ok) {
         throw new Error("Failed to fetch posts");
@@ -102,11 +106,15 @@ export default function Posts() {
       </div>
     );
   }
-  const handleLikeClick = (post: Post) => {
-    setPosts(
-      posts.map((p) =>
+  const handleLikeClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    post: Post,
+  ) => {
+    event.preventDefault();
+    setPosts((prevPosts) =>
+      prevPosts.map((p) =>
         p.id === post.id
-          ? { ...p, likes: (p.likes || 1) + 0, liked: !p.liked }
+          ? { ...p, likes: p.liked ? 0 : (p.likes || 0) + 1, liked: !p.liked }
           : p,
       ),
     );
@@ -127,20 +135,23 @@ export default function Posts() {
               </h2>
               <HiDotsHorizontal />
             </div>
-            <h2 className="postTitle">{post.title}</h2>
-            <p className="text-1xl">{post.body}</p>
-            <div className="flex justify-between items-center pt-6">
+            <h3 className="postTitle">{post.title}</h3>
+            <h4 className="text-1xl">{post.body}</h4>
+            <div className="flex justify-between items-center pt-2">
               <button
-                className="flex items-center"
-                onClick={() => handleLikeClick(post)}
+                type="button"
+                className="flex items-center justify-center"
+                onClick={(event) => handleLikeClick(event, post)}
               >
-                {post.liked ? <FaHeart /> : <FaRegHeart />}
-                {post.liked && post.likes && (
-                  <p className=" text-grey pl-2">{post.likes}</p>
+                {post.liked ? <FaHeart size="20" /> : <FaRegHeart size="20" />}
+                {post.likes === 0 ? (
+                  <span className="hidden">{post.likes}</span>
+                ) : (
+                  <span className="pl-4">{post.likes}</span>
                 )}
               </button>
 
-              <button>
+              <button type="button">
                 <FaRegComment />
               </button>
               <button>
