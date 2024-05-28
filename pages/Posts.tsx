@@ -9,7 +9,7 @@ import {
 
 //api
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_page=";
-const USERS_URL = "https://jsonplaceholder.typicode.com/users";
+// const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
 type Post = {
   id: number;
@@ -33,7 +33,6 @@ type User = {
 
 export default function Posts() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState<Page>(1);
@@ -45,18 +44,14 @@ export default function Posts() {
     try {
       setLoading(true);
 
-      const [response, response_1] = await Promise.all([
-        fetch(`${POSTS_URL}${page}`),
-        fetch(`${USERS_URL}`),
-      ]);
-      if (!response.ok && !response_1.ok) {
+      const response = await fetch(`${POSTS_URL}${page}`);
+      if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
 
       const posts = await response.json();
-      const users = await response_1.json();
+
       setPosts((prev) => [...prev, ...posts]);
-      setUsers(users);
 
       if (posts.length < 10) {
         setHasMore(false);
@@ -121,18 +116,14 @@ export default function Posts() {
     <div ref={scrollContainerRef} className="postContainer">
       <h2 className="text-[32px]">Post Feed</h2>
       {posts.map((post: Post) => {
-        const user = users.find((user) => user.id === post.id);
+        // const user = users.find((user) => user.id === post.id);
 
         return (
           <div key={post.id} className="postWrapper">
             <div className=" flex justify-between items-center pb-2">
-              <h2 className="font-bold flex flex-col">
-                {user?.name}
-                <span className="text-gray font-thin	"> @{user?.username}</span>
-              </h2>
+              <h3 className="font-bold">{post.title}</h3>
               <HiDotsHorizontal />
             </div>
-            <h3 className="postTitle">{post.title}</h3>
             <h4 className="text-1xl">{post.body}</h4>
             <div className="flex justify-between items-center pt-2">
               <button
