@@ -34,14 +34,14 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  padding: 1rem 0;
+  padding-top: 1rem;
 }
 .postWrapper {
   background-color: var(--dark);
   max-width: 700px;
   width: calc(100% - 2rem);
   margin: 0.5rem 0;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 .loadingContainer,
 .errorContainer {
@@ -62,7 +62,4 @@ h1 {
   padding-bottom: 1rem;
   font-weight: 700;
 }
-.postTitle {
-  padding-bottom: 1rem;
-  font-weight: 700;
-}
+
