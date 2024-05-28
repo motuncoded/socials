@@ -106,7 +106,7 @@ export default function Posts() {
     setPosts((prevPosts) =>
       prevPosts.map((p) =>
         p.id === post.id
-          ? { ...p, likes: p.liked ? 0 : (p.likes || 0) + 1, liked: !p.liked }
+          ? { ...p, likes: p.liked ? 0 : p.likes++, liked: !p.liked }
           : p,
       ),
     );
