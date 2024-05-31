@@ -25,11 +25,11 @@ type Error = {
 };
 type Page = number;
 
-type User = {
-  id: number;
-  name: string;
-  username: string;
-};
+// type User = {
+//   id: number;
+//   name: string;
+//   username: string;
+// };
 
 export default function Posts() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -37,7 +37,6 @@ export default function Posts() {
   const [error, setError] = useState<Error | null>(null);
   const [page, setPage] = useState<Page>(1);
   const [hasMore, setHasMore] = useState(true);
-
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const fetchPosts = async () => {
@@ -106,7 +105,7 @@ export default function Posts() {
     setPosts((prevPosts) =>
       prevPosts.map((p) =>
         p.id === post.id
-          ? { ...p, likes: p.liked ? 0 : p.likes++, liked: !p.liked }
+          ? { ...p, likes: p.liked ? 0 : (p.likes || 0) + 1, liked: !p.liked }
           : p,
       ),
     );
@@ -125,24 +124,31 @@ export default function Posts() {
               <HiDotsHorizontal />
             </div>
             <h4 className="text-1xl">{post.body}</h4>
-            <div className="flex justify-between items-center pt-2">
-              <button
-                type="button"
-                className="flex items-center justify-center"
-                onClick={(event) => handleLikeClick(event, post)}
-              >
-                {post.liked ? <FaHeart size="20" /> : <FaRegHeart size="20" />}
-                {post.likes === 0 ? (
-                  <span className="hidden">{post.likes}</span>
-                ) : (
-                  <span className="pl-4">{post.likes}</span>
-                )}
-              </button>
-
+            <div className="flex justify-between pt-2">
+              <div>
+                <button
+                  type="button"
+                  className="flex items-center justify-center"
+                  onClick={(event) => handleLikeClick(event, post)}
+                >
+                  {post.liked ? (
+                    <FaHeart size="20" />
+                  ) : (
+                    <FaRegHeart size="20" />
+                  )}
+                  {post.likes === 0 ? (
+                    <span className="invisible ml-2">{post.likes}</span>
+                  ) : (
+                    <span className="ml-2">{post.likes}</span>
+                  )}
+                </button>
+              </div>
+              <div>
+                <button type="button">
+                  <FaRegComment />
+                </button>
+              </div>
               <button type="button">
-                <FaRegComment />
-              </button>
-              <button>
                 <FaRegShareSquare />
               </button>
             </div>
